@@ -15,7 +15,7 @@ struct proc *initproc;
 int nextpid = 1;
 struct spinlock pid_lock;
 
-extern void forkret(void);
+extern void forkret();
 static void freeproc(struct proc *p);
 
 extern char trampoline[]; // trampoline.S
@@ -169,6 +169,22 @@ freeproc(struct proc *p)
   p->killed = 0;
   p->xstate = 0;
   p->state = UNUSED;
+  p->trace_mask = 0;
+}
+
+uint64
+get_unused_proceses(){
+
+  uint64 count = 0;
+  struct proc *p;
+  
+  for(p = proc; p < &proc[NPROC]; p++) {
+    if(p->state != UNUSED){
+      count++;
+    }
+  }
+
+  return count;
 }
 
 // Create a user page table for a given process, with no user memory,
@@ -320,6 +336,7 @@ fork(void)
 
   acquire(&np->lock);
   np->state = RUNNABLE;
+  np->trace_mask = p->trace_mask; //set trace mask for child process same as parent
   release(&np->lock);
 
   return pid;

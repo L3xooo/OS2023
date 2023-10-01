@@ -1,0 +1,3 @@
+1. usertrap()
+2. Hodnota 7 a je to value syscallu
+3. lw,a3
