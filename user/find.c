@@ -3,22 +3,6 @@
 #include "user/user.h"
 #include "kernel/fs.h"
 
-// int
-// match(char *filename, char *name) {
-//   return strcmp(filename, name) == 0;
-// }
-
-// '.' Matches any single character.​​​​
-// '*' Matches zero or more of the preceding element.
-int match(char* s, char* p) {
-  if (!*p) return !*s;
-  if (*(p + 1) != '*') 
-    return *s == *p || (*p == '.' && *s != '\0') ? match(s + 1, p + 1) : 0; 
-  else 
-    return *s == *p || (*p == '.' && *s != '\0') ? match(s, p + 2) || match(s + 1, p) : match(s, p + 2);
-    //return (*s == *p || (*p == '.' && *s != '\0')) && match(s + 1, p) || match(s, p + 2);
-}
-
 void
 find(int fd, char *dir, char *name) {
   struct dirent de;
@@ -42,6 +26,9 @@ find(int fd, char *dir, char *name) {
       printf("%s\n", path);
     } else if (st.type == T_DIR) {
       int subfd;
+      if (strcmp(de.name,name) == 0) {
+        printf("%s\n",path);
+      }
       if((subfd = open(path, 0)) < 0){
         printf("find: cannot open %s\n", path);
         continue;
