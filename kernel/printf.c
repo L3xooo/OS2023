@@ -139,9 +139,7 @@ void
 backtrace(void)
 {
   uint64 fp = r_fp();
-  while (fp != PGROUNDDOWN(fp)) { // PGROUNDDOWN(fp) always indicates the starting position of the page where fp is located
-    uint64 r_addr = *(uint64*)(fp - 8); // the return address lives at a fixed offset (-8) from the frame pointer of a stackframe
-    printf("%p\n", r_addr);
-    fp = *(uint64*)(fp - 16); // the saved frame pointer lives at fixed offset (-16) from the frame pointer
+  for(uint64 a = fp; a < PGROUNDUP(fp);a =  *((uint64 *)(a+16))){
+    printf("%p\n",*((uint64*)(a+8)));
   }
 }
