@@ -10,7 +10,7 @@ main()
   char buf[BSIZE];
   int fd, i, blocks;
 
-  fd = open("big.file", O_CREATE | O_WRONLY);
+ fd = open("big.file", O_CREATE | O_WRONLY);
   if(fd < 0){
     printf("bigfile: cannot open big.file for writing\n");
     exit(-1);
