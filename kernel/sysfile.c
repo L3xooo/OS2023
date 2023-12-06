@@ -343,14 +343,8 @@ sys_open(void)
 
   begin_op();
 
+
   if(omode & O_CREATE){
-    ip = create(path, T_FILE, 0, 0);
-    if(ip == 0){
-      end_op();
-      return -1;
-    }
-  } else {
-if(omode & O_CREATE){
     ip = create(path, T_FILE, 0, 0);
     if(ip == 0){
       end_op();
@@ -369,7 +363,7 @@ if(omode & O_CREATE){
         return -1;
       }
     }
-  }
+    
     ilock(ip);
     if(ip->type == T_DIR && omode != O_RDONLY){
       iunlockput(ip);
@@ -377,7 +371,6 @@ if(omode & O_CREATE){
       return -1;
     }
   }
-
   if(ip->type == T_DEVICE && (ip->major < 0 || ip->major >= NDEV)){
     iunlockput(ip);
     end_op();
